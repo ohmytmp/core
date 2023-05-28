@@ -1,7 +1,7 @@
 [project]
 name = "ohmytmp"
-version = "0.0.2"
-description = "core"
+version = "0.0.3"
+description = "ohmytmp-core"
 readme = "README.md"
 requires-python = ">=3.7"
 license = {file = "LICENSE"}
