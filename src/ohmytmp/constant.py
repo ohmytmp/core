@@ -24,9 +24,7 @@ class Const:
 class __func(Const):
     def __init__(self) -> None:
         super().__init__()
-        self.GUESSTYPE = 'guesstype'
         self.ANALYSIS = 'analysis'
-        self.DESTINATION = 'destination'
         self.AFTER = 'after'
 
 
@@ -58,10 +56,13 @@ class Info(Const):
         super().__init__()
         self.SRC = os.path.abspath(os.path.expanduser(src))
         self.BASE = os.path.basename(self.SRC)
-        self.DST = None
-        self.EXT = None
+        self.EXT = os.path.splitext(self.BASE)[1][1:]
         self.TYPE = TYPE.UNKNOWN
         self.TAGS = list()
+
+        self.DST = None
+        self.SHA256 = None
+        self.UUID = None
 
     def to_taglist(self, addlist: list = ['EXT', 'TYPE']) -> list:
         ans = self.TAGS.copy()

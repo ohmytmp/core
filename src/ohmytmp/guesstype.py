@@ -1,7 +1,7 @@
 import os
 import mimetypes
 
-from .constant import TYPE
+from .constant import TYPE, Info
 
 
 def get_ext(p: str) -> str:
@@ -63,5 +63,11 @@ for i in ext_type:
         ext_re[j] = i
 
 
-def guess_ext(p: str) -> str:
-    return ext_re.get(get_ext(p), TYPE.UNKNOWN)
+def guess_ext(e: str) -> str:
+    return ext_re.get(e, TYPE.UNKNOWN)
+
+
+def guesstype(info: Info) -> None:
+    info.TYPE = guess_ext(info.EXT)
+    if info.TYPE == TYPE.UNKNOWN:
+        info.TYPE == guess_mime(info.SRC)
