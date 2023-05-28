@@ -1,14 +1,8 @@
-import os
-from ohmytmp import Initializer
+from ohmytmp import Ohmytmp, Info, PluginAfter
 
-src = '../'
-dst = '../example'
+def prt(i: Info)->None:
+    print(i.to_dict())
 
-
-def walk(src: str, dst: str):
-    a = Initializer(dst)
-    for p, _, f in os.walk(src):
-        for i in f:
-            print(a.init_file(os.path.join(p, i)).to_dict())
-
-walk(src, dst)
+a = Ohmytmp()
+a.register(PluginAfter(prt))
+a.walk('./')
