@@ -68,6 +68,7 @@ class Initializer:
         info = Info(p)
         self.exec_analysis(info)
         info.DST = self.exec_destination(info)
+        self.exec_after(info)
         return info
 
     def walk(self, d: str):

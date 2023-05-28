@@ -23,7 +23,6 @@ class DstExtType(PluginDestination):
         self.__dst = os.path.abspath(os.path.expanduser(dst))
         self.data = {i: os.path.abspath(os.path.join(self.__dst, i))
             for i in TYPE.to_dict().values()}
-        print(self.data)
 
         def __func(info: Info) -> str:
             return self.data.get(info.TYPE, self.data[TYPE.UNKNOWN])

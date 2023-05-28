@@ -68,5 +68,5 @@ class Info(Const):
         d = self.to_dict()
         for i in addlist:
             if i in d and isinstance(d[i], str):
-                ans.append('%s:%s' % (i, d[i]))
+                ans.append('%s_%s' % (i, d[i]))
         return ans
