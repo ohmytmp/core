@@ -70,4 +70,4 @@ def guess_ext(e: str) -> str:
 def guesstype(info: Info) -> None:
     info.TYPE = guess_ext(info.EXT)
     if info.TYPE == TYPE.UNKNOWN:
-        info.TYPE == guess_mime(info.SRC)
+        info.TYPE = guess_mime(info.SRC)
