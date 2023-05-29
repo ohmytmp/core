@@ -2,7 +2,7 @@ import os
 from copy import deepcopy as dcp
 
 from .constant import FUNC, Info
-from .plugin import *
+from .plugin import PluginBase, PluginAnalysis, PluginAfter
 
 
 class Ohmytmp:
