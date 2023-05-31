@@ -1,82 +1,84 @@
-from typing import Callable
+import os
 
-from .__constant import Info, FUNC
+from .__constant import Info, FUNC, TYPE
 
 
 class PluginBase:
-    def __init__(
-        self,
-        func: Callable[[Info], None] = None,
-        event: int = None,
-        level: int = -1,
-    ) -> None:
+    def __init__(self, event: int = None, level: int = -1) -> None:
         self.event = event
         self.level = level
-        if func is not None:
-            self.func = func
 
-    def func(self, *l, **d):
+    def func(self, info: Info) -> None:
         pass
 
 
 class PluginGuessType(PluginBase):
-    def __init__(
-        self,
-        func: Callable[[Info], None] = None,
-        level: int = -1,
-    ) -> None:
-        super().__init__(func, FUNC.GUESSTYPE, level)
+    def __init__(self, level: int = -1) -> None:
+        super().__init__(FUNC.GUESSTYPE, level)
 
-    # def func(self, info: Info) -> None:
-    #     pass
+    def guesstype(self, info: Info) -> str:
+        return TYPE.UNKNOWN
+
+    def func(self, info: Info) -> None:
+        info.TYPE = self.guesstype(info)
 
 
 class PluginAnalysis(PluginBase):
-    def __init__(
-        self,
-        func: Callable[[Info], None] = None,
-        level: int = -1,
-    ) -> None:
-        super().__init__(func, FUNC.ANALYSIS, level)
+    def __init__(self, level: int = -1) -> None:
+        super().__init__(FUNC.ANALYSIS, level)
 
-    # def func(self, info: Info) -> None:
-    #     pass
+    def func(self, info: Info) -> None:
+        pass
 
 
 class PluginAddTags(PluginBase):
-    def __init__(
-        self,
-        func: Callable[[Info], None] = None,
-        level: int = -1,
-    ) -> None:
-        super().__init__(func, FUNC.ADDTAGS, level)
+    def __init__(self, level: int = -1) -> None:
+        super().__init__(FUNC.ADDTAGS, level)
 
-    # def func(self, info: Info) -> None:
-    #     pass
+    def get_tags(self, info: Info) -> set:
+        return set()
+
+    def func(self, info: Info) -> None:
+        info.TAGS.update(self.get_tags(info))
 
 
 class PluginDestination(PluginBase):
-    def __init__(
-        self,
-        func: Callable[[Info], None] = None,
-        level: int = -1,
-    ) -> None:
-        super().__init__(func, FUNC.DESTINATION, level)
+    def __init__(self, dst: str, level: int = -1) -> None:
+        super().__init__(FUNC.DESTINATION, level)
+        self.dst = os.path.abspath(os.path.expanduser(dst))
+        self.flag = False
 
-    # def func(self, info: Info) -> None:
-    #     pass
+    def start(self) -> None:
+        if not self.flag:
+            self.mkdirs()
+            self.flag = True
+
+    def join(self, *paths) -> str:
+        return os.path.abspath(os.path.join(self.dst, *paths))
+
+    def mkdir(self, path: str) -> None:
+        if os.path.exists(path):
+            if not os.path.isdir(path):
+                raise FileExistsError(path)
+        else:
+            os.makedirs(path)
+
+    def mkdirs(self) -> None:
+        self.mkdir(self.dst)
+
+    def get_dst(self, info: Info) -> str:
+        return self.dst
+
+    def func(self, info: Info) -> None:
+        info.DST = self.get_dst(info)
 
 
 class PluginAfter(PluginBase):
-    def __init__(
-        self,
-        func: Callable[[Info], None] = None,
-        level: int = -1,
-    ) -> None:
-        super().__init__(func, FUNC.AFTER, level)
+    def __init__(self, level: int = -1) -> None:
+        super().__init__(FUNC.AFTER, level)
 
-    # def func(self, _info: Info) -> None:
-    #     pass
+    def func(self, _info: Info) -> None:
+        pass
 
 
 __all__ = ('PluginBase', 'PluginGuessType', 'PluginAnalysis',
