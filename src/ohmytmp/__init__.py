@@ -1,8 +1,11 @@
 from .__constant import *
-del __constant
-from .__core import *
-del __core
 from .__plugin import *
+from .__core import *
+
+del __constant
 del __plugin
+del __core
 
 VERSION = '0.0.6'
+
+__all__ = ('FUNC', 'TYPE', 'Info', 'PluginBase', 'Ohmytmp')
