@@ -1,15 +1,11 @@
 from ohmytmp import Ohmytmp, Info, PluginAfter, FUNC, VERSION
+from ohmytmp.__constant import Info
 
 print(VERSION)
 
 a = Ohmytmp()
 
-
-def prt(i: Info) -> None:
-    print(i.to_dict())
-
-
-class CC:
+class CC(PluginAfter):
     def __init__(self) -> None:
         pass
     @a.reg_handle(FUNC.ADDTAGS, -1)
@@ -17,9 +13,12 @@ class CC:
         print(FUNC.ADDTAGS, '_handle_f')
     def g(self, info: Info):
         print(FUNC.DESTINATION, '_f_g')
+    def func(self, _info: Info) -> None:
+        print(_info.to_dict())
 
 
-a.register(PluginAfter(prt))
-a.reg_f(CC().g, FUNC.DESTINATION)
+cc = CC()
+a.register(cc)
+a.reg_f(cc.g, FUNC.DESTINATION)
 
 a.walk('./')
