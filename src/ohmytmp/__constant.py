@@ -63,6 +63,11 @@ class Info(Const):
         self.TYPE = TYPE.UNKNOWN
         self.TAGS = list()
 
+        self.ID = None
+        self.MD5 = None
+        self.SHA256 = None
+        self.DST = None
+
     def to_taglist(self, addlist: list = ['EXT', 'TYPE']) -> list:
         ans = self.TAGS.copy()
         d = self.to_dict()
