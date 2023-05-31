@@ -61,19 +61,19 @@ class Info(Const):
         self.BASE = os.path.basename(self.SRC)
         self.EXT = os.path.splitext(self.BASE)[1][1:]
         self.TYPE = TYPE.UNKNOWN
-        self.TAGS = list()
+        self.TAGS = set()
 
         self.ID = None
         self.MD5 = None
         self.SHA256 = None
         self.DST = None
 
-    def to_taglist(self, addlist: list = ['EXT', 'TYPE']) -> list:
+    def to_taglist(self, addlist: tuple = ('EXT', 'TYPE')) -> set:
         ans = self.TAGS.copy()
         d = self.to_dict()
         for i in addlist:
             if i in d and isinstance(d[i], str):
-                ans.append('%s_%s' % (i, d[i]))
+                ans.add('%s_%s' % (i, d[i]))
         return ans
 
 
