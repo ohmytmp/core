@@ -6,7 +6,7 @@ CONSTCHAR0 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ_'
 
 
 def is_const(v: str) -> bool:
-    return len(v) < 255 and v[0] in CONSTCHAR0 and all([i in CONSTCHAR for i in v[1:]])
+    return 0 < len(v) < 255 and v[0] in CONSTCHAR0 and all([i in CONSTCHAR for i in v[1:]])
 
 
 class Const:
