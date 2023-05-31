@@ -24,8 +24,11 @@ class Const:
 class __func(Const):
     def __init__(self) -> None:
         super().__init__()
-        self.ANALYSIS = 'analysis'
-        self.AFTER = 'after'
+        self.GUESSTYPE = 0x08
+        self.ANALYSIS = 0x18
+        self.ADDTAGS = 0x28
+        self.DESTINATION = 0x38
+        self.AFTER = 0x48
 
 
 FUNC = __func()
@@ -67,3 +70,6 @@ class Info(Const):
             if i in d and isinstance(d[i], str):
                 ans.append('%s_%s' % (i, d[i]))
         return ans
+
+
+__all__ = ('FUNC', 'TYPE', 'Info')
