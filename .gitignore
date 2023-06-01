@@ -3,6 +3,8 @@
 tempCodeRunnerFile*
 
 *~
+*.json
+*.jsons
 
 archive
 example
