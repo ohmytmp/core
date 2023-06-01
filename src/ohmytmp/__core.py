@@ -1,6 +1,7 @@
 import os
-from typing import Callable
+import json
 from copy import deepcopy as dcp
+from typing import Callable
 
 from .__constant import EVENT, Info
 from .__plugin import PluginBase
@@ -8,9 +9,17 @@ from .__guesstype import guesstype
 
 
 class Ohmytmp:
-    def __init__(self) -> None:
+    def __init__(self, sv: str = None) -> None:
         self.func = {i: list() for i in EVENT.to_dict().values()}
         self.reg_f(guesstype, EVENT.GUESSTYPE)
+        if sv:
+            self.sv = os.path.abspath(os.path.expanduser(sv))
+            self.reg_f(self.__save)
+
+    def __save(self, info: Info) -> None:
+        open(self.sv, 'a').write(
+            json.dumps(info.to_dict(), skipkeys=True) + '\n'
+        )
 
     def register(self, a: PluginBase) -> None:
         try:
@@ -44,8 +53,7 @@ class Ohmytmp:
             return __new_f
         return __get_f
 
-    def init_file(self, p: str) -> Info:
-        info = Info(p)
+    def __event(self, info: Info) -> Info:
         for i in sorted(self.func):
             if i < EVENT.AFTER:
                 for j in self.func[i]:
@@ -55,10 +63,21 @@ class Ohmytmp:
                     j(dcp(info))
         return info
 
+    def init_file(self, src: str = None, j: dict = None) -> Info:
+        info = Info(src, j)
+        return self.__event(info)
+
     def walk(self, d: str):
         for p, _, f in os.walk(d):
             for i in f:
-                self.init_file(os.path.join(p, i))
+                self.init_file(src=os.path.join(p, i))
+
+    def load(self, ld: str) -> None:
+        with open(os.path.abspath(os.path.expanduser(ld)), 'r') as f:
+            line = f.readline()
+            if not line:
+                return
+            self.init_file(j=json.loads(line))
 
 
 __all__ = ('Ohmytmp',)
