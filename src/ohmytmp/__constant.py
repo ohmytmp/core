@@ -66,7 +66,7 @@ class Info(Const):
             self.SRC = j['SRC']
 
         self.TYPE = TYPE.UNKNOWN
-        self.TAGS = set()
+        self.TAGS = list()
 
         self.ID = None
         self.MD5 = None
@@ -76,13 +76,13 @@ class Info(Const):
         if j:
             for i in j:
                 if is_const(i):
-                    eval('self.%s = j["%s"]' % (i, i))
+                    exec('self.%s = j["%s"]' % (i, i))
 
         self.BASE = os.path.basename(self.SRC)
         self.EXT = os.path.splitext(self.BASE)[1][1:]
 
-    def to_taglist(self, addlist: tuple = ('EXT', 'TYPE')) -> set:
-        ans = self.TAGS.copy()
+    def to_tagset(self, addlist: tuple = ('EXT', 'TYPE')) -> set:
+        ans = set(self.TAGS)
         d = self.to_dict()
         for i in addlist:
             if i in d and isinstance(d[i], str):

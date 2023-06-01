@@ -75,9 +75,9 @@ class Ohmytmp:
     def load(self, ld: str) -> None:
         with open(os.path.abspath(os.path.expanduser(ld)), 'r') as f:
             line = f.readline()
-            if not line:
-                return
-            self.init_file(j=json.loads(line))
+            while line:
+                self.init_file(j=json.loads(line))
+                line = f.readline()
 
 
 __all__ = ('Ohmytmp',)
