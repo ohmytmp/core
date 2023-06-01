@@ -2,23 +2,23 @@ import os
 from typing import Callable
 from copy import deepcopy as dcp
 
-from .__constant import FUNC, Info
+from .__constant import EVENT, Info
 from .__plugin import PluginBase
 from .__guesstype import guesstype
 
 
 class Ohmytmp:
     def __init__(self) -> None:
-        self.func = {i: list() for i in FUNC.to_dict().values()}
-        self.reg_f(guesstype, FUNC.GUESSTYPE)
+        self.func = {i: list() for i in EVENT.to_dict().values()}
+        self.reg_f(guesstype, EVENT.GUESSTYPE)
 
     def register(self, a: PluginBase) -> None:
         try:
             event = a.event
         except AttributeError:
-            event = FUNC.AFTER
+            event = EVENT.AFTER
         if event is None:
-            event = FUNC.AFTER
+            event = EVENT.AFTER
 
         try:
             level = a.level
@@ -27,7 +27,7 @@ class Ohmytmp:
 
         self.reg_f(a.func, event, level)
 
-    def reg_f(self, func: Callable, event: str = FUNC.AFTER, level: int = -1) -> None:
+    def reg_f(self, func: Callable, event: str = EVENT.AFTER, level: int = -1) -> None:
         if level == -1:
             self.func[event].append(func)
             return
@@ -36,8 +36,8 @@ class Ohmytmp:
         self.func[event] = self.func[event][:level] + \
             [func,] + self.func[event][level:]
 
-    def reg_handle(self, event: str = FUNC.AFTER, level: int = -1):
-        def __get_f(f: Callable):
+    def reg_handle(self, event: str = EVENT.AFTER, level: int = -1) -> Callable:
+        def __get_f(f: Callable) -> Callable:
             def __new_f(*args, **kwds):
                 return f(*args, **kwds)
             self.reg_f(__new_f, event, level)
@@ -47,7 +47,7 @@ class Ohmytmp:
     def init_file(self, p: str) -> Info:
         info = Info(p)
         for i in sorted(self.func):
-            if i < FUNC.AFTER:
+            if i < EVENT.AFTER:
                 for j in self.func[i]:
                     j(info)
             else:

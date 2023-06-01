@@ -21,7 +21,7 @@ class Const:
         return ans
 
 
-class __func(Const):
+class __event(Const):
     def __init__(self) -> None:
         super().__init__()
         self.GUESSTYPE = 0x08
@@ -31,7 +31,7 @@ class __func(Const):
         self.AFTER = 0x48
 
 
-FUNC = __func()
+EVENT = __event()
 
 
 class __type(Const):
@@ -55,11 +55,16 @@ TYPE = __type()
 
 
 class Info(Const):
-    def __init__(self, src: str) -> None:
+    def __init__(self, src: str = None, j: dict = None) -> None:
         super().__init__()
-        self.SRC = os.path.abspath(os.path.expanduser(src))
-        self.BASE = os.path.basename(self.SRC)
-        self.EXT = os.path.splitext(self.BASE)[1][1:]
+        if not src and not j:
+            raise ValueError(src, j)
+
+        if src:
+            self.SRC = os.path.abspath(os.path.expanduser(src))
+        else:
+            self.SRC = j['SRC']
+
         self.TYPE = TYPE.UNKNOWN
         self.TAGS = set()
 
@@ -67,6 +72,14 @@ class Info(Const):
         self.MD5 = None
         self.SHA256 = None
         self.DST = None
+
+        if j:
+            for i in j:
+                if is_const(i):
+                    eval('self.%s = j["%s"]' % (i, i))
+
+        self.BASE = os.path.basename(self.SRC)
+        self.EXT = os.path.splitext(self.BASE)[1][1:]
 
     def to_taglist(self, addlist: tuple = ('EXT', 'TYPE')) -> set:
         ans = self.TAGS.copy()
@@ -77,4 +90,4 @@ class Info(Const):
         return ans
 
 
-__all__ = ('FUNC', 'TYPE', 'Info')
+__all__ = ('EVENT', 'TYPE', 'Info')

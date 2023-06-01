@@ -1,6 +1,6 @@
 import os
 
-from .__constant import Info, FUNC, TYPE
+from .__constant import Info, EVENT, TYPE
 
 
 class PluginBase:
@@ -14,7 +14,7 @@ class PluginBase:
 
 class PluginGuessType(PluginBase):
     def __init__(self, level: int = -1) -> None:
-        super().__init__(FUNC.GUESSTYPE, level)
+        super().__init__(EVENT.GUESSTYPE, level)
 
     def guesstype(self, info: Info) -> str:
         return TYPE.UNKNOWN
@@ -25,7 +25,7 @@ class PluginGuessType(PluginBase):
 
 class PluginAnalysis(PluginBase):
     def __init__(self, level: int = -1) -> None:
-        super().__init__(FUNC.ANALYSIS, level)
+        super().__init__(EVENT.ANALYSIS, level)
 
     def func(self, info: Info) -> None:
         pass
@@ -33,7 +33,7 @@ class PluginAnalysis(PluginBase):
 
 class PluginAddTags(PluginBase):
     def __init__(self, level: int = -1) -> None:
-        super().__init__(FUNC.ADDTAGS, level)
+        super().__init__(EVENT.ADDTAGS, level)
 
     def get_tags(self, info: Info) -> set:
         return set()
@@ -44,7 +44,7 @@ class PluginAddTags(PluginBase):
 
 class PluginDestination(PluginBase):
     def __init__(self, dst: str, level: int = -1) -> None:
-        super().__init__(FUNC.DESTINATION, level)
+        super().__init__(EVENT.DESTINATION, level)
         self.dst = os.path.abspath(os.path.expanduser(dst))
         self.flag = False
 
@@ -75,7 +75,7 @@ class PluginDestination(PluginBase):
 
 class PluginAfter(PluginBase):
     def __init__(self, level: int = -1) -> None:
-        super().__init__(FUNC.AFTER, level)
+        super().__init__(EVENT.AFTER, level)
 
     def func(self, _info: Info) -> None:
         pass

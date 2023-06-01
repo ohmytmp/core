@@ -8,4 +8,4 @@ del __core
 
 VERSION = '0.0.7'
 
-__all__ = ('FUNC', 'TYPE', 'Info', 'PluginBase', 'Ohmytmp')
+__all__ = ('EVENT', 'TYPE', 'Info', 'PluginBase', 'Ohmytmp')
