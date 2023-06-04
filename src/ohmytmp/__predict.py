@@ -8,7 +8,7 @@ def get_ext(p: str) -> str:
     return os.path.splitext(p)[1][1:]
 
 
-def guess_mime(p: str) -> str:
+def predict_mime(p: str) -> str:
     a, b = mimetypes.guess_type(p, False)
     if b in 'gzip bzip2 xz'.split():
         return TYPE.ARCHIVE
@@ -63,14 +63,14 @@ for i in ext_type:
         ext_re[j] = i
 
 
-def guess_ext(e: str) -> str:
+def predict_ext(e: str) -> str:
     return ext_re.get(e, TYPE.UNKNOWN)
 
 
-def guesstype(info: Info) -> None:
-    info.TYPE = guess_ext(info.EXT)
+def predict(info: Info) -> None:
+    info.TYPE = predict_ext(info.EXT)
     if info.TYPE == TYPE.UNKNOWN:
-        info.TYPE = guess_mime(info.SRC)
+        info.TYPE = predict_mime(info.SRC)
 
 
-__all__ = ('guesstype',)
+__all__ = ('predict',)

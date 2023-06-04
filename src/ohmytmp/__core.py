@@ -5,13 +5,13 @@ from typing import Callable
 
 from .__constant import EVENT, Info
 from .__plugin import PluginBase
-from .__guesstype import guesstype
+from .__predict import predict
 
 
 class Ohmytmp:
     def __init__(self, sv: str = None) -> None:
         self.func = {i: list() for i in EVENT.to_dict().values()}
-        self.reg_f(guesstype, EVENT.GUESSTYPE)
+        self.reg_f(predict, EVENT.GUESSTYPE)
         if sv:
             self.sv = os.path.abspath(os.path.expanduser(sv))
             self.reg_f(self.__save)

@@ -12,15 +12,15 @@ class PluginBase:
         pass
 
 
-class PluginGuessType(PluginBase):
+class PluginPredictType(PluginBase):
     def __init__(self, level: int = -1) -> None:
         super().__init__(EVENT.GUESSTYPE, level)
 
-    def guesstype(self, info: Info) -> str:
+    def predict(self, info: Info) -> str:
         return TYPE.UNKNOWN
 
     def func(self, info: Info) -> None:
-        info.TYPE = self.guesstype(info)
+        info.TYPE = self.predict(info)
 
 
 class PluginAnalysis(PluginBase):
@@ -39,7 +39,7 @@ class PluginAddTags(PluginBase):
         return set()
 
     def func(self, info: Info) -> None:
-        info.TAGS.update(self.get_tags(info))
+        info.TAGS.extend(self.get_tags(info))
 
 
 class PluginDestination(PluginBase):
@@ -81,5 +81,5 @@ class PluginAfter(PluginBase):
         pass
 
 
-__all__ = ('PluginBase', 'PluginGuessType', 'PluginAnalysis',
+__all__ = ('PluginBase', 'PluginPredictType', 'PluginAnalysis',
            'PluginAddTags', 'PluginDestination', 'PluginAfter')
